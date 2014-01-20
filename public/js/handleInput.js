@@ -1,39 +1,44 @@
 
 
 function handleInput(dt) {
+    input.hasKeyPressed = false;
+    if(input.isDown('SPACE')) {
+        if(!player.sprite.isJumping){
+            // console.log('jump');
+            player.sprite.startJump();
+        }
+    }
+
     if(input.isDown('DOWN') || input.isDown('s')) {
+        input.hasKeyPressed = true;
         player.pos[1] += playerSpeed * dt;
         player.sprite.updateDir("DOWN");
         input.lastKey = "DOWN";
-        return;
     }
 
     if(input.isDown('UP') || input.isDown('z')) {
+        input.hasKeyPressed = true;
         player.pos[1] -= playerSpeed * dt;
         player.sprite.updateDir("UP");
         input.lastKey = "UP";
-        return;
     }
-    
-    // if(input.isDown('SPACE')) {
-    //     player.sprite.jump();
-    //     return;
-    // }
 
     if(input.isDown('LEFT') || input.isDown('q')) {
+        input.hasKeyPressed = true;
         player.pos[0] -= playerSpeed * dt;
         player.sprite.updateDir("LEFT");
         input.lastKey = "LEFT";
-        return;
     }
 
     if(input.isDown('RIGHT') || input.isDown('d')) {
+        input.hasKeyPressed = true;
         player.pos[0] += playerSpeed * dt;
         player.sprite.updateDir("RIGHT");
         input.lastKey = "RIGHT";
-        return;
     }
-    player.sprite.updateDir("STAND");
+    if(!input.hasKeyPressed){
+        player.sprite.updateDir("STAND");
+    }
 
     // if(input.isDown('SPACE') &&
     //    !isGameOver &&

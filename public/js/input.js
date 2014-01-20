@@ -38,6 +38,7 @@
     });
 
     window.input = {
+        hasKeyPressed: true,
         lastKey: 'DOWN',
         isDown: function(key) {
             return pressedKeys[key.toUpperCase()];

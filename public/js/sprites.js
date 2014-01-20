@@ -9,6 +9,12 @@
         this.url = url;
         this.dir = dir || 'STAND';
         this.once = once;
+        this.isJumping = false;
+        this.isJumpingUp = false;
+        this.isJumpingDown = false;
+        this.jumpHight = 20;
+        this.decalJump = 0;
+        this.gravityModifier = 1;
     };
 
     Sprite.prototype = {
@@ -18,6 +24,33 @@
 
         updateDir: function(dir){
             this.dir = dir;
+        },
+
+        startJump : function(){
+            // console.log("startJump");
+            this.isJumping = true;
+            this.isJumpingUp = true;
+        },
+
+        jumping : function(){
+            if(this.isJumpingUp){
+                this.decalJump += 1+this.gravityModifier;
+                this.gravityModifier -= 0.1;
+                if (this.decalJump >= this.jumpHight) {
+                    this.isJumpingUp = false;
+                    this.isJumpingDown = true;
+                }
+            }else{
+                this.decalJump -= 1+this.gravityModifier;
+                this.gravityModifier += 0.1;
+                 if (this.decalJump <= 0) {
+                    this.isJumping = false;
+                    this.isJumpingDown = false;
+                    this.decalJump = 0;
+                    this.gravityModifier = 1;
+                }
+            }
+
         },
 
         render: function(ctx) {
@@ -94,12 +127,16 @@
             //     x += frame * this.size[0];
             // }
 
+            if(this.isJumping){
+                this.jumping();
+            }
             ctx.drawImage(resources.get(this.url),
                           x, y,
                           this.size[0], this.size[1],
-                          0, 0,
+                          0, -this.decalJump,
                           this.size[0], this.size[1]);
         }
+
     };
 
     window.Sprite = Sprite;

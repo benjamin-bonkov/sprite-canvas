@@ -1,17 +1,3 @@
-
-// A cross-browser requestAnimationFrame
-// See https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
-	var requestAnimFrame = (function(){
-	    return window.requestAnimationFrame       ||
-	        window.webkitRequestAnimationFrame ||
-	        window.mozRequestAnimationFrame    ||
-	        window.oRequestAnimationFrame      ||
-	        window.msRequestAnimationFrame     ||
-	        function(callback){
-	            window.setTimeout(callback, 1000 / 60);
-	        };
-	})();
-
 // The main game loop
 	var lastTime;
 	function main() {
@@ -55,9 +41,16 @@
 	var player = {
 	    pos: [0, 0],
 	    //Sprite(url, pos, size, speed, frames, dir, once)
-	    sprite: new Sprite('public/images/dwarf-sprites.png', [0, 0], [25, 25], 4, [ 1, 2])
+	    sprite: new Sprite({
+	    	url : 'public/images/dwarf-sprites.png'
+	    	,	pos : [0, 0]
+	    	,	size: [25, 25]
+	    	,	speed: 4
+	    	,	frames: [1, 2]
+			//,	dir
+	    	//,	once
+	    })
 	};
-
 
 	var gameTime = 0;
 	var isGameOver;
@@ -68,7 +61,6 @@
 // Update game objects
 	function update(dt) {
 	    gameTime += dt;
-
 	    handleInput(dt);
 	    updateEntities(dt);
 	};
@@ -81,6 +73,7 @@
 
 // Draw everything
 	function render() {
+		ctx.fillStyle = "green";
 	    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	    // Render the player if the game isn't over
@@ -90,7 +83,7 @@
 	};
 
 	function renderEntities(list) {
-	    for(var i=0; i<list.length; i++) {
+	    for(var i=0, len=list.length; i<len; i++) {
 	        renderEntity(list[i]);
 	    }    
 	}
@@ -104,7 +97,6 @@
 
 // Reset game to original state
 	function reset() {
-
 	    isGameOver = false;
 	    gameTime = 0;
 	    score = 0;

@@ -1,5 +1,4 @@
 
-
 function handleInput(dt) {
     input.hasKeyPressed = false;
     if(input.isDown('SPACE')) {

@@ -10,12 +10,17 @@
 		this.url = param.url;
 		this.dir = param.dir || 'STAND';
 		this.once = param.once;
-		this.isJumping = false;
-		this.isJumpingUp = false;
-		this.isJumpingDown = false;
-		this.jumpHight = 20;
-		this.decalJump = 0;
-		this.gravityModifier = 1;
+		this.state = {
+			isJumping : false
+		};
+		this.jump = {
+			up : false
+			, down : false
+			, maxH : 20
+			, h : 0
+			, gravityModifier : 1
+		}
+
 	};
 
 	Sprite.prototype = {
@@ -29,26 +34,26 @@
 
 		startJump : function(){
 			// console.log("startJump");
-			this.isJumping = true;
-			this.isJumpingUp = true;
+			this.state.isJumping = true;
+			this.jump.up = true;
 		},
 
 		jumping : function(){
-			if(this.isJumpingUp){
-				this.decalJump += 1+this.gravityModifier;
-				this.gravityModifier -= 0.1;
-				if (this.decalJump >= this.jumpHight) {
-					this.isJumpingUp = false;
-					this.isJumpingDown = true;
+			if(this.jump.up){
+				this.jump.h += 1+this.jump.gravityModifier;
+				this.jump.gravityModifier -= 0.1;
+				if (this.jump.h >= this.jump.maxH) {
+					this.jump.up = false;
+					this.jump.down = true;
 				}
 			}else{
-				this.decalJump -= 1+this.gravityModifier;
-				this.gravityModifier += 0.1;
-				if (this.decalJump <= 0) {
-					this.isJumping = false;
-					this.isJumpingDown = false;
-					this.decalJump = 0;
-					this.gravityModifier = 1;
+				this.jump.h -= 1+this.jump.gravityModifier;
+				this.jump.gravityModifier += 0.1;
+				if (this.jump.h <= 0) {
+					this.jump.isJumping = false;
+					this.jump.down = false;
+					this.jump.h = 0;
+					this.jump.gravityModifier = 1;
 				}
 			}
 
@@ -123,13 +128,14 @@
 				break;
 			}
 
-            if(this.isJumping){
+            if(this.state.isJumping){
             	this.jumping();
             }
+
             ctx.drawImage(resources.get(this.url),
             	x, y,
             	this.size[0], this.size[1],
-            	0, -this.decalJump,
+            	0, -this.jump.h,
             	this.size[0], this.size[1]);
         }
 

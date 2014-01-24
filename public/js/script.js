@@ -12,10 +12,11 @@
 	};
 
 // Create the canvas
-	var canvas = document.createElement("canvas");
-	var ctx = canvas.getContext("2d");
-	canvas.width = 512;
-	canvas.height = 480;
+	var canvas = document.createElement("canvas")
+	,	ctx = canvas.getContext("2d")
+	,	terrain = new Terrain();
+	canvas.width = 500;
+	canvas.height = 500;
 	document.body.appendChild(canvas);
 
 //init
@@ -39,7 +40,7 @@
 
 // Game state
 	var player = {
-	    pos: [0, 0],
+	    pos: [1, 1],
 	    //Sprite(url, pos, size, speed, frames, dir, once)
 	    sprite: new Sprite({
 	    	url : 'public/images/dwarf-sprites.png'
@@ -52,11 +53,9 @@
 	    })
 	};
 
-	var gameTime = 0;
-	var isGameOver;
-
-// Speed in pixels per second
-	var playerSpeed = 70;
+	var gameTime = 0
+	,	playerSpeed = 70 // Speed in pixels per second
+	,	isGameOver;
 
 // Update game objects
 	function update(dt) {
@@ -75,11 +74,16 @@
 	function render() {
 		ctx.fillStyle = "green";
 	    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+	    //genere terrain
+	    ctx.save();
+	    terrain.render(ctx);
+		
+	    ctx.restore();
 	    // Render the player if the game isn't over
 	    if(!isGameOver) {
 	        renderEntity(player);
 	    }
+	    // console.log(player.pos)
 	};
 
 	function renderEntities(list) {
@@ -104,5 +108,5 @@
 	    enemies = [];
 	    bullets = [];
 
-	    player.pos = [50, canvas.height / 2];
+	    player.pos = [25, 25];
 	};

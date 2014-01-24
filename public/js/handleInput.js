@@ -1,37 +1,48 @@
 
 function handleInput(dt) {
     input.hasKeyPressed = false;
+
+
+
     if(input.isDown('SPACE')) {
-        if(!player.sprite.isJumping){
+        if(!player.sprite.jump.isJumping){
             // console.log('jump');
             player.sprite.startJump();
         }
     }
 
     if(input.isDown('DOWN') || input.isDown('s')) {
+        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] + playerSpeed * dt)]})){
+            player.pos[1] += playerSpeed * dt;
+        }
         input.hasKeyPressed = true;
-        player.pos[1] += playerSpeed * dt;
         player.sprite.updateDir("DOWN");
         input.lastKey = "DOWN";
     }
 
     if(input.isDown('UP') || input.isDown('z')) {
+        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] - playerSpeed * dt)]})){
+            player.pos[1] -= playerSpeed * dt;
+        }
         input.hasKeyPressed = true;
-        player.pos[1] -= playerSpeed * dt;
         player.sprite.updateDir("UP");
         input.lastKey = "UP";
     }
 
     if(input.isDown('LEFT') || input.isDown('q')) {
+        if(!terrain.collide({pos:[(player.pos[0] - playerSpeed * dt), player.pos[1]]})){
+            player.pos[0] -= playerSpeed * dt;
+        }
         input.hasKeyPressed = true;
-        player.pos[0] -= playerSpeed * dt;
         player.sprite.updateDir("LEFT");
         input.lastKey = "LEFT";
     }
 
     if(input.isDown('RIGHT') || input.isDown('d')) {
+        if(!terrain.collide({pos:[(player.pos[0] + playerSpeed * dt), player.pos[1]]})){
+            player.pos[0] += playerSpeed * dt;
+        }
         input.hasKeyPressed = true;
-        player.pos[0] += playerSpeed * dt;
         player.sprite.updateDir("RIGHT");
         input.lastKey = "RIGHT";
     }

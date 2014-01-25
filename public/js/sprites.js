@@ -19,7 +19,12 @@
 			, maxH : 20
 			, h : 0
 			, gravityModifier : 1
-		}
+		};
+		this.shadow = {
+			h : 0
+			, w : 0
+			, opacity : 0
+		};
 
 	};
 
@@ -42,6 +47,9 @@
 			if(this.jump.up){
 				this.jump.h += 1+this.jump.gravityModifier;
 				this.jump.gravityModifier -= 0.1;
+				this.shadow.w = this.shadow.w + (0.1);
+				this.shadow.h = this.shadow.h-(0.015);
+				this.shadow.opacity += 0.05;
 				if (this.jump.h >= this.jump.maxH) {
 					this.jump.up = false;
 					this.jump.down = true;
@@ -49,14 +57,37 @@
 			}else{
 				this.jump.h -= 1+this.jump.gravityModifier;
 				this.jump.gravityModifier += 0.1;
+				this.shadow.w = this.shadow.w - (0.1)
+				this.shadow.h = this.shadow.h + (0.015);
+				this.shadow.opacity -= 0.05;
 				if (this.jump.h <= 0) {
 					this.state.isJumping = false;
 					this.jump.down = false;
 					this.jump.h = 0;
+					this.shadow.w = 0;
+					this.shadow.h = 0;
 					this.jump.gravityModifier = 1;
+					this.shadow.opacity = 0;
 				}
 			}
 
+		},
+
+		renderShadow: function(){
+			ctx.save();
+			// scale context horizontally, draw circle which will be stretched into an oval
+			ctx.scale(this.shadow.w, this.shadow.h);
+			ctx.beginPath();
+			ctx.arc(this.size[0]/2/this.shadow.w - (player.pos[0]/this.shadow.w)*0.1/player.pos[0], (this.size[1]/this.shadow.h - (player.pos[1]/this.shadow.h)*0.05 /player.pos[1] ), 10, 0, 2 * Math.PI, false);
+			ctx.restore();
+			// apply styling
+			// ctx.globalAlpha = player.jump.shadowOpacity;
+			console.log(this.shadow.opacity)
+			ctx.globalAlpha = this.shadow.opacity;
+			ctx.strokeStyle = "black";
+			ctx.fillStyle = "black";
+			ctx.fill();
+			ctx.globalAlpha = 1;
 		},
 
 		render: function(ctx) {
@@ -129,6 +160,7 @@
 			}
 
             if(this.state.isJumping){
+            	this.renderShadow();
             	this.jumping();
             }
 

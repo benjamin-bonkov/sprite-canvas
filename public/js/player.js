@@ -34,8 +34,8 @@
 
 		startJump : function(){
 			// console.log("startJump");
-			this.jump.up = true;
 			this.state.isJumping = true;
+			this.jump.up = true;
 		},
 
 		jumping : function(){
@@ -50,7 +50,7 @@
 				this.jump.h -= 1+this.jump.gravityModifier;
 				this.jump.gravityModifier += 0.1;
 				if (this.jump.h <= 0) {
-					this.state.isJumping = false;
+					this.jump.isJumping = false;
 					this.jump.down = false;
 					this.jump.h = 0;
 					this.jump.gravityModifier = 1;

@@ -5,15 +5,15 @@ function handleInput(dt) {
 
 
     if(input.isDown('SPACE')) {
-        if(!player.sprite.jump.isJumping){
+        if(!player.sprite.state.isJumping){
             // console.log('jump');
             player.sprite.startJump();
         }
     }
 
     if(input.isDown('DOWN') || input.isDown('s')) {
-        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] + playerSpeed * dt)]})){
-            player.pos[1] += playerSpeed * dt;
+        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] + player.speed * dt)]})){
+            player.pos[1] += player.speed * dt;
         }
         input.hasKeyPressed = true;
         player.sprite.updateDir("DOWN");
@@ -21,8 +21,8 @@ function handleInput(dt) {
     }
 
     if(input.isDown('UP') || input.isDown('z')) {
-        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] - playerSpeed * dt)]})){
-            player.pos[1] -= playerSpeed * dt;
+        if(!terrain.collide({pos:[player.pos[0], (player.pos[1] - player.speed * dt)]})){
+            player.pos[1] -= player.speed * dt;
         }
         input.hasKeyPressed = true;
         player.sprite.updateDir("UP");
@@ -30,8 +30,8 @@ function handleInput(dt) {
     }
 
     if(input.isDown('LEFT') || input.isDown('q')) {
-        if(!terrain.collide({pos:[(player.pos[0] - playerSpeed * dt), player.pos[1]]})){
-            player.pos[0] -= playerSpeed * dt;
+        if(!terrain.collide({pos:[(player.pos[0] - player.speed * dt), player.pos[1]]})){
+            player.pos[0] -= player.speed * dt;
         }
         input.hasKeyPressed = true;
         player.sprite.updateDir("LEFT");
@@ -39,8 +39,8 @@ function handleInput(dt) {
     }
 
     if(input.isDown('RIGHT') || input.isDown('d')) {
-        if(!terrain.collide({pos:[(player.pos[0] + playerSpeed * dt), player.pos[1]]})){
-            player.pos[0] += playerSpeed * dt;
+        if(!terrain.collide({pos:[(player.pos[0] + player.speed * dt), player.pos[1]]})){
+            player.pos[0] += player.speed * dt;
         }
         input.hasKeyPressed = true;
         player.sprite.updateDir("RIGHT");
@@ -48,6 +48,7 @@ function handleInput(dt) {
     }
     if(!input.hasKeyPressed){
         player.sprite.updateDir("STAND");
+
     }
 
     // if(input.isDown('SPACE') &&

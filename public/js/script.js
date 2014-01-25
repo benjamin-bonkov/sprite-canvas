@@ -11,12 +11,19 @@
 	    requestAnimFrame(main);
 	};
 
+//extend
+	Function.prototype.extend = function( o ){
+		for(var i in o){
+			this.prototype[i] = o[i];
+		}
+	}
+
 // Create the canvas
 	var canvas = document.createElement("canvas")
 	,	ctx = canvas.getContext("2d")
 	,	terrain = new Terrain();
-	canvas.width = 500;
-	canvas.height = 500;
+	canvas.width = terrain.caseSize * terrain.map.length;
+	canvas.height = terrain.caseSize * terrain.map[0].length;
 	document.body.appendChild(canvas);
 
 //init
@@ -40,13 +47,13 @@
 
 // Game state
 	var player = {
-	    pos: [1, 1],
-	    //Sprite(url, pos, size, speed, frames, dir, once)
-	    sprite: new Sprite({
+	    pos: [1, 1]
+		, speed : 100 // Speed in pixels per second
+		, sprite: new Sprite({
 	    	url : 'public/images/dwarf-sprites.png'
 	    	,	pos : [0, 0]
 	    	,	size: [25, 25]
-	    	,	speed: 4
+	    	,	speed: 5
 	    	,	frames: [1, 2]
 			//,	dir
 	    	//,	once
@@ -54,7 +61,6 @@
 	};
 
 	var gameTime = 0
-	,	playerSpeed = 70 // Speed in pixels per second
 	,	isGameOver;
 
 // Update game objects
